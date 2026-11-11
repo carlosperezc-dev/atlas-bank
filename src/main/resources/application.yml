@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: atlas-bank
+  ai:
+    openai:
+      api-key: ollama
+      base-url: http://localhost:11434/v1
+      chat:
+        model: qwen3:1.7b
+  datasource:
+    url: jdbc:h2:mem:atlasbank
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/realms/atlas-bank
+server:
+  port: 8080

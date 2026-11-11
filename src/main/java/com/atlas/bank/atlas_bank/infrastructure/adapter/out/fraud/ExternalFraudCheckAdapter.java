@@ -1,0 +1,37 @@
+package com.atlas.bank.atlas_bank.infrastructure.adapter.out.fraud;
+
+import com.atlas.bank.atlas_bank.application.port.out.FraudCheckPort;
+import com.atlas.bank.atlas_bank.domain.model.shared.FraudCheckResult;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+
+@Component
+@Slf4j
+public class ExternalFraudCheckAdapter implements FraudCheckPort {
+
+    @Override
+    public FraudCheckResult check(Long accountId, BigDecimal amount) {
+        ExternalFraudResponse response = callExternalApi(accountId, amount);
+        log.info("Respuesta del servicio de fraude - riesgo: {}, score: {}, recomendation: {}",
+                response.getRiskLevel(), response.getScore(), response.getRecommendation());
+
+        if ("BLOCK".equals(response.getRecommendation())){
+            return FraudCheckResult.blocked(
+                    "Operacion bloqueada por riesgo " + response.getRiskLevel()
+                    + " (score: " + response.getScore() + ")"
+            );
+        }
+
+        return FraudCheckResult.allowed();
+    }
+
+    private ExternalFraudResponse callExternalApi(Long amountId, BigDecimal amount){
+        if (amount.compareTo(new BigDecimal("1000000")) >0 ){
+            return new ExternalFraudResponse("HIGH",0.95, "BLOCK");
+        }
+        return new ExternalFraudResponse("LOW", 0.1, "ALLOW");
+    }
+
+}
