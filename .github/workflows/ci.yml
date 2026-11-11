@@ -1,0 +1,42 @@
+
+name: Atlas Bank - CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download the repository source code
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # 2. Install Java 25 and configure Maven dependency caching
+      - name: Set up JDK 25
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      # 3. Give execution permission to Maven Wrapper
+      - name: Make Maven Wrapper executable
+        run: chmod +x mvnw
+
+      # 4. Compile the application and run all tests
+      - name: Build and run tests
+        run: ./mvnw --batch-mode --no-transfer-progress clean verify

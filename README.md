@@ -519,22 +519,31 @@ Refer to the controller mappings in the source code for the current endpoint pat
 
 The project is being developed incrementally, prioritizing architecture and correctness before introducing additional infrastructure complexity.
 
-### Planned improvements
+## Roadmap
 
+The project is being developed incrementally, prioritizing architectural quality, business correctness and maintainability.
+
+### Phase 1 – Persistence and Testing
 - [ ] Migrate banking persistence from H2 to PostgreSQL.
-- [ ] Add database migrations with Flyway or Liquibase.
-- [ ] Expand unit and integration test coverage.
-- [ ] Add Testcontainers for infrastructure integration tests.
-- [ ] Introduce asynchronous communication with Apache Kafka.
-- [ ] Implement reliable event publishing and consumption.
-- [ ] Add observability with Spring Boot Actuator, Micrometer and Prometheus.
-- [ ] Add centralized metrics and dashboards with Grafana.
-- [ ] Improve structured logging and distributed tracing.
-- [ ] Set up CI/CD with GitHub Actions.
-- [ ] Containerize the Atlas Bank application.
-- [ ] Explore cloud deployment using AWS.
-- [ ] Evolve selected components towards independently deployable services when justified by business and technical needs.
+- [ ] Introduce database versioning with Flyway.
+- [ ] Add integration tests with Testcontainers.
+- [ ] Expand test coverage for application use cases.
 
+### Phase 2 – Asynchronous Communication
+- [ ] Introduce Apache Kafka for asynchronous communication.
+- [ ] Implement event-driven workflows.
+- [ ] Address reliable event publishing and consumption.
+
+### Phase 3 – Observability and Delivery
+- [ ] Integrate Spring Boot Actuator and Micrometer.
+- [ ] Add Prometheus and Grafana dashboards.
+- [ ] Implement structured logging and distributed tracing.
+- [ ] Configure CI/CD pipelines with GitHub Actions.
+
+### Phase 4 – Deployment and Evolution
+- [ ] Containerize the application.
+- [ ] Explore cloud deployment using AWS.
+- [ ] Evaluate independent service extraction only when justified by business and technical requirements.
 ---
 
 ## Engineering Principles
