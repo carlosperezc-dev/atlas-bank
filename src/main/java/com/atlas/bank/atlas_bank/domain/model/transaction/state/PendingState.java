@@ -20,6 +20,7 @@ public record PendingState() implements TransactionState {
 
     @Override
     public TransactionState validate() {
-        return new RejectedState();
+        return new ValidatedState();
     }
+
 }

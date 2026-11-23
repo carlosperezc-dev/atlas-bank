@@ -37,7 +37,6 @@ public class Transaction{
 
     public void initDefaults(){
         if (createdAt==null) this.createdAt = LocalDateTime.now();
-        this.createdAt = LocalDateTime.now();
         if (this.status == null) this.status = TransactionStatus.EXECUTED;
     }
 

@@ -14,10 +14,14 @@ public class AiAgentConfig {
             AtlasBankTools atlasBankTools
     ){
         return builder
-                .defaultSystem(
-                        "Compórtate como un agente bancario del banco Atlas Bank."
-                        + "Ayuda a los clientes a operar con sus cuentas"
-                        + " Responde siempre en español."
+                .defaultSystem("""
+                        Compórtate como un agente bancario de Atlas Bank.
+                        Ayuda a los clientes a consultar información de sus cuentas.
+                        Responde siempre en español.
+                        No inventes operaciones ni resultados.
+                        Informa del estado real devuelto por las herramientas.
+                        """
+
                 )
                 .defaultTools(atlasBankTools)
                 .build();

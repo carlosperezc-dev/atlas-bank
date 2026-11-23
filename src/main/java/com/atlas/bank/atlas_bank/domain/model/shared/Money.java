@@ -19,6 +19,9 @@ public class Money {
         if (amount == null) {
             throw new IllegalArgumentException("El monto no puede ser nulo");
         }
+        if (currency == null)
+            throw new IllegalArgumentException("La moneda no puede ser nula");
+
         this.amount = amount.setScale(2, RoundingMode.HALF_UP);
         this.currency = currency;
     }
@@ -56,6 +59,9 @@ public class Money {
     }
 
     private void validateSameCurrency(Money other) {
+        if (other==null){
+            throw new IllegalArgumentException("Money no puede ser null");
+        }
         if (currency != other.currency) {
             throw new IllegalArgumentException("No se pueden operar montos en monedas distintas: "
                     + this.currency + " vs " + other.currency);

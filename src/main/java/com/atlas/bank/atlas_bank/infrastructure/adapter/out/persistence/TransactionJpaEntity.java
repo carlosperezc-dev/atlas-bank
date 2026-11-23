@@ -31,10 +31,10 @@ public class TransactionJpaEntity {
     @Column(name = "target_account_id")
     private Long targetAccountId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal fee;
 
     @Enumerated(EnumType.STRING)

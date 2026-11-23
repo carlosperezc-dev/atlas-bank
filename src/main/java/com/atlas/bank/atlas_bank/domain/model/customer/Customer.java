@@ -1,6 +1,5 @@
 package com.atlas.bank.atlas_bank.domain.model.customer;
 
-
 import com.atlas.bank.atlas_bank.domain.model.shared.Email;
 import lombok.*;
 

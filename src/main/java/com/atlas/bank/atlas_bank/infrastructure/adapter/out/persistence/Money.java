@@ -20,7 +20,7 @@ import java.math.RoundingMode;
 @EqualsAndHashCode
 public class Money {
 
-    @Column(nullable=false) //se generan columnas e nla tabla que les consuman
+    @Column(nullable = false, precision = 19, scale = 2) //se generan columnas e nla tabla que les consuman
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)

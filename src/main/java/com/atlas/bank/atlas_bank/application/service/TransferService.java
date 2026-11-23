@@ -12,7 +12,6 @@ import com.atlas.bank.atlas_bank.domain.service.TransferDomainService;
 import com.atlas.bank.atlas_bank.domain.strategy.fee.FeeCalculator;
 import com.atlas.bank.atlas_bank.domain.validation.TransferValidator;
 import jakarta.transaction.Transactional;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +27,6 @@ public class TransferService extends TransactionProcessor<TransferContext>
     public TransferService(TransactionRepositoryPort transactionRepository,
                            AccountRepositoryPort accountRepository,
                            List<FeeCalculator> feeCalculators,
-                           ApplicationEventPublisher eventPublisher,
                            List<TransferValidator> validators,
                            TransferDomainService transferDomainService) {
         super(transactionRepository);
@@ -50,10 +48,6 @@ public class TransferService extends TransactionProcessor<TransferContext>
                 .orElseThrow(() -> new AccountNotFoundException(command.toId()));
 
         Transaction transaction =  process(new TransferContext(from, to, command.amount()));
-
-//        transaction.executeTransfer();
-//        transactionRepository.save(transaction);
-
         return transaction;
     }
 
@@ -83,7 +77,14 @@ public class TransferService extends TransactionProcessor<TransferContext>
 
     @Override
     protected Transaction save(TransferContext context, BigDecimal fee) {
-        Transaction transaction = TransactionFactory.createTransfer(context,fee);
-        return transactionRepository.save(transaction);
+        // Primero guardamos la transacción pendiente y obtenemos su ID.
+        Transaction transaction = TransactionFactory.createTransfer(context, fee);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
+        // Ahora ejecutamos la máquina de estados y generamos el evento con ID.
+        savedTransaction.executeTransfer();
+
+        // Guardamos de nuevo, ahora con estado EXECUTED y el evento generado.
+        return transactionRepository.save(savedTransaction);
     }
 }

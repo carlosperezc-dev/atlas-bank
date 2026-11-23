@@ -1,11 +1,8 @@
 package com.atlas.bank.atlas_bank.infrastructure.adapter.out.persistence;
 
 import com.atlas.bank.atlas_bank.domain.model.customer.CustomerStatus;
-import com.atlas.bank.atlas_bank.domain.model.shared.Email;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

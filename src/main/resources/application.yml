@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:./.env[.properties]
   application:
     name: atlas-bank
   ai:
@@ -7,24 +9,48 @@ spring:
       base-url: http://localhost:11434/v1
       chat:
         model: qwen3:1.7b
+
   datasource:
-    url: jdbc:h2:mem:atlasbank
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5434/atlasbank
+    username: ${ATLAS_DB_USER}
+    password: ${ATLAS_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8181/realms/atlas-bank
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+    consumer:
+      group-id: atlas-bank-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        "[spring.json.value.default.type]": com.atlas.bank.atlas_bank.domain.event.TransactionExecutedEvent
+        "[spring.json.trusted.packages]": com.atlas.bank.atlas_bank.domain.event
+        "[spring.deserializer.value.delegate.class]": org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+
+app:
+  kafka:
+    topics:
+      transaction-events: transaction-events
+
+
 server:
   port: 8080

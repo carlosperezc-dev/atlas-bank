@@ -46,10 +46,10 @@ public class SecurityConfig {
                         .hasAnyRole("USER","ADMIN")
 
                         //AI
-                        .requestMatchers("/api/v1/ai/**").permitAll()
+                        .requestMatchers("/api/v1/ai/**").hasAnyRole("USER","ADMIN")
 
-                        //H2
-                        .requestMatchers("/h2-console/**").permitAll()
+                        //H2 se ha sustituido por Postgresql
+//                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer( oauth2 -> oauth2
@@ -57,9 +57,9 @@ public class SecurityConfig {
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
                 )
-                //estas 2 son para tratar lo de H2
-                .headers( headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                //estas 2 son para tratar lo de H2. Como se sustituye por postgresql lo quitamos
+//                .headers( headers ->
+//                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

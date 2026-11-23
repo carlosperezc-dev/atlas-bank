@@ -24,3 +24,27 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  postgres-atlas:
+    image: postgres:17
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: atlasbank
+      POSTGRES_USER: ${ATLAS_DB_USER}
+      POSTGRES_PASSWORD: ${ATLAS_DB_PASSWORD}
+    volumes:
+      - atlas-bank-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${ATLAS_DB_USER} -d atlasbank"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  kafka:
+    image: apache/kafka:4.1.1
+    container_name: atlas-kafka
+    ports:
+      - "9092:9092"
+
+volumes:
+  atlas-bank-data:
