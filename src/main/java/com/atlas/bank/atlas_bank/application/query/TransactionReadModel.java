@@ -11,5 +11,5 @@ public record TransactionReadModel(
         BigDecimal amount,
         BigDecimal fee,
         String status,
-        LocalDateTime createdAd) {
+        LocalDateTime createdAt) {
 }

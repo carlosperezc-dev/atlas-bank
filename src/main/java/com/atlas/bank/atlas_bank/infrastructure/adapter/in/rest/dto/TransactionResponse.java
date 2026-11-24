@@ -14,5 +14,5 @@ public class TransactionResponse {
     private BigDecimal amount;
     private BigDecimal fee;
     private String status;
-    private LocalDateTime createdAd;
+    private LocalDateTime createdAt;
 }

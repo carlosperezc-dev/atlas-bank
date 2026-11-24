@@ -8,7 +8,6 @@ import lombok.*;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
-@ToString
 public class Email {
 
     @Column(nullable=false, updatable=false)
