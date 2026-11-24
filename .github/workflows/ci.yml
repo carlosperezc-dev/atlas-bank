@@ -20,6 +20,26 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: atlasbank
+          POSTGRES_USER: atlas
+          POSTGRES_PASSWORD: atlas
+        ports:
+          - 5434:5432
+        options: >-
+          --health-cmd "pg_isready -U atlas -d atlasbank"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      env:
+        ATLAS_DB_USER: atlas
+        ATLAS_DB_PASSWORD: atlas
+
+
     steps:
       # 1. Download the repository source code
       - name: Checkout repository
